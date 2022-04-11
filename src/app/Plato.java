@@ -80,7 +80,7 @@ public class Plato {
         this.tiempoDemora = tiempoDemora;
     }
 
-    private void setStock(int stock) {
+    public void setStock(int stock) {
         this.stock = stock;
     }
 
@@ -100,5 +100,15 @@ public class Plato {
         }
 
         return  rta;
+    }
+    public boolean hayStock()
+    {
+        if(getStock()>0)
+        {
+            return  true;
+        }else
+        {
+            return false;
+        }
     }
 }

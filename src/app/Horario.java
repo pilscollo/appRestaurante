@@ -1,19 +1,19 @@
 package app;
 
 public class Horario{
-    private int horaInicio;
-    private int  horaFin;
+    private float horaInicio;
+    private float  horaFin;
 
-    public Horario(int horaInicio, int horaFin) {
+    public Horario(float horaInicio, float horaFin) {
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
     }
 
-    public int getHoraInicio() {
+    public float getHoraInicio() {
         return horaInicio;
     }
 
-    public int getHoraFin() {
+    public float getHoraFin() {
         return horaFin;
     }
 

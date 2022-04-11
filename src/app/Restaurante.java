@@ -134,4 +134,162 @@ public class Restaurante {
     public void setHistoricos(Pedido[] historicos) {
         this.historicos = historicos;
     }
+    ///----------------------------------------------------------------------------------------------------------
+    /** funciones restaurante
+     * calcular puntuacion con puntuaciones x
+     * Hacer pedido x
+     * horario valido (con horario pasado por parametro)
+     * pasar de pedido a historico x
+     * generar item x
+     * agregar a lista de item x
+     * agregar puntuacion x
+     */
+    //---------------puntuaciones------------------------------------------------------------------------------
+    private void calcularPuntuacion()
+    {
+        //se tiene que usar cada vez que se agrega una puntuacion
+        int rta=0;
+        int val=0;
+        for (int i = 0; i <listadoDePuntuaciones.length ; i++) {
+            if(listadoDePuntuaciones[i].getValor()!=0)
+            {
+                val++;
+                rta= rta+listadoDePuntuaciones[i].getValor();
+            }
+        }
+        setPuntuacion((float)rta/(float) val);
+    }
+    private int validosPuntuaciones()
+    {
+        int val = 0;
+
+        for (int i = 0; i < getListadoDePuntuaciones().length; i++) {
+           if(getListadoDePuntuaciones()[i]!=null)
+           {
+               val++;
+           }
+        }
+        return val;
+    }
+
+    public void agregarPuntuacion(int valor, String nombre,String comentario)
+    {
+        int val= validosPuntuaciones();
+        Puntuacion puntuacion= new Puntuacion(valor,nombre,comentario);
+        Puntuacion listado[]= getListadoDePuntuaciones();
+        listado[val]= puntuacion;
+        setListadoDePuntuaciones(listado);
+    }
+    //---------------Item-------------------------------------------------------------------------------------
+    public  Item generarItem(Plato plato,int cant)
+    {
+        Item item= new Item(plato.getId(),cant,(plato.getPrecio()*cant));
+        return item;
+    }
+
+    public int validosItem(Item listaItem[])
+    {
+        int val = 0;
+
+        for (int i = 0; i < listaItem.length; i++) {
+            if(listaItem[i]!=null)
+            {
+                val++;
+            }
+        }
+        return val;
+    }
+    public Item[] agregarAlistaItem(Item listaItem[],Plato plato,int cant)
+    {
+        int val= validosItem(listaItem);
+        listaItem[val]= generarItem(plato,cant);
+        return listaItem;
+    }
+    ///esta bien que esto este aca?
+    ///----------hacer pedido-----------------------------------------------------------------------------------
+
+    private int validosPedidos()
+    {
+        int val=0;
+
+        for (int i = 0; i < getPedidos().length; i++) {
+            if(getPedidos()[i]!=null)
+            {
+                val++;
+            }
+        }
+        return val;
+    }
+
+    private void agregarPedidoALista(Pedido pedido)
+    {
+        int val= validosPedidos();
+        Pedido listaPedidos[]= getPedidos();
+        listaPedidos[val]= pedido;
+        setPedidos(listaPedidos);
+
+    }
+
+    public int  hacerPedido(Item listaItem[])
+    {
+
+        int costoEnvio=0;
+        int estadoPedido=0;
+
+        if(isDelivery()==true)
+        {
+            costoEnvio=100;
+            estadoPedido=1;
+        }
+        Pedido pedido= new Pedido(costoEnvio,getId(),estadoPedido,listaItem);
+
+
+        pedido.calcularPrecioTotal();
+        agregarPedidoALista(pedido);
+        return validosPedidos();
+
+    }
+    // cuando el pedido cambia de estado al ultimo estado tengo que pasar el pedido de pedidos a historico
+    private int validosHistorico()
+    {
+        int val=0;
+
+        for (int i = 0; i < getHistoricos().length; i++) {
+            if(getHistoricos()[i]!=null)
+            {
+                val++;
+            }
+        }
+        return val;
+    }
+
+    public void pasarDePedidoAhistorico(int posPedido)
+    {
+        int valHistorico= validosHistorico();
+        this.historicos[valHistorico]= this.pedidos[posPedido];
+        this.pedidos[posPedido]=null;
+    }
+    //------validacion del horario-----------------------------------------------------------------------------
+    public boolean validarHorario(float horario)
+    {
+        boolean rta= false;
+
+        for (int i = 0; i < getHorarios().length; i++) {
+            if(getHorarios()[i]!=null)
+            {
+                if(getHorarios()[i].getHoraInicio()<=horario && getHorarios()[i].getHoraFin()<=horario)
+                {
+                    rta= true;
+                }
+            }
+        }
+
+        return rta;
+    }
+
+
+
+
+
+
 }

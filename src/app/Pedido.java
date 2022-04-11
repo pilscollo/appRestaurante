@@ -88,4 +88,19 @@ public class Pedido {
         setPrecioTotal(precioTotal);
 
     }
+    ///-------------------------------------------------------------------------------------------------------
+    public int cambiarEstado() {
+
+        if(getEstadoPedido()>0 && getEstadoPedido()<6)
+        {
+            setEstadoPedido(getEstadoPedido()+1);
+        }else if(getEstadoPedido()<=0 &&getEstadoPedido()>-3)
+        {
+            setEstadoPedido(getEstadoPedido()-1);
+        }
+        return getEstadoPedido();
+    }
+    ///-------------------------------------------------------------------------------------------------------
+
+
 }

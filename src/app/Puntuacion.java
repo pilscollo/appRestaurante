@@ -1,18 +1,20 @@
 package app;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Calendar;
 
 public class Puntuacion {
     private int valor;
     private String nombreUsuario;
     private String comentario;
-    private Calendar fecha;
+    private LocalDate fecha;
 
     public Puntuacion(int valor, String nombreUsuario, String comentario) {
         this.valor = valor;
         this.nombreUsuario = nombreUsuario;
         this.comentario = comentario;
-        this.fecha = Calendar.getInstance();
+        this.fecha = LocalDate.now();
     }
     ///Getters------------------------------------------------------------------------------------------------
 
@@ -28,7 +30,7 @@ public class Puntuacion {
         return comentario;
     }
 
-    public Calendar getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
     ///SETTERS---------------------------------------------------------------------------------------------------
