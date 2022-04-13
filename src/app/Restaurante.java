@@ -145,7 +145,7 @@ public class Restaurante {
      * agregar puntuacion x
      */
     //---------------puntuaciones------------------------------------------------------------------------------
-    private void calcularPuntuacion()
+    public float calcularPuntuacion()
     {
         //se tiene que usar cada vez que se agrega una puntuacion
         int rta=0;
@@ -158,6 +158,7 @@ public class Restaurante {
             }
         }
         setPuntuacion((float)rta/(float) val);
+        return  getPuntuacion();
     }
     private int validosPuntuaciones()
     {
@@ -230,7 +231,7 @@ public class Restaurante {
 
     }
 
-    public int  hacerPedido(Item listaItem[])
+    public Pedido hacerPedido(Item listaItem[])
     {
 
         int costoEnvio=0;
@@ -246,7 +247,7 @@ public class Restaurante {
 
         pedido.calcularPrecioTotal();
         agregarPedidoALista(pedido);
-        return validosPedidos();
+        return pedido;
 
     }
     // cuando el pedido cambia de estado al ultimo estado tengo que pasar el pedido de pedidos a historico
@@ -277,7 +278,8 @@ public class Restaurante {
         for (int i = 0; i < getHorarios().length; i++) {
             if(getHorarios()[i]!=null)
             {
-                if(getHorarios()[i].getHoraInicio()<=horario && getHorarios()[i].getHoraFin()<=horario)
+
+                if(getHorarios()[i].getHoraInicio()<=horario && getHorarios()[i].getHoraFin()>=horario)
                 {
                     rta= true;
                 }

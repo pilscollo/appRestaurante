@@ -2,10 +2,13 @@ package app;
 
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Scanner;
 
 public class Main {
+    static Scanner sc;
     public static void main(String[] args) {
         ///punteacion
+        sc= new Scanner(System.in);
         Puntuacion putuancion1= new Puntuacion(10,"Pedro Rodriguez","muy bueno");
         Puntuacion puntuacion2= new  Puntuacion(5,"Juan Rodriguez","no muy bueno");
         Puntuacion putuancion3= new Puntuacion(6,"Pablo sinhueso","regular");
@@ -29,7 +32,7 @@ public class Main {
 
         /// horarios
         Horario horario1= new Horario(9,13);
-        Horario horario2= new Horario(15,20);
+        Horario horario2= new Horario(15,23);
         Horario horario3= new Horario(8,12);
         Horario horario4= new Horario(13,18);
 
@@ -46,5 +49,116 @@ public class Main {
         int valUsuarios=1;
         int valRestaurantes=2;
         App app= new App(listaRestaurante,listaUsuarios);
+
+        Calendar ahora= Calendar.getInstance();
+        float minutos = ahora.get(Calendar.MINUTE) * (0.010f);
+        float hora= ahora.get(Calendar.HOUR_OF_DAY);
+        float horario = hora+ minutos;
+        System.out.println(horario);
+        mostrarRestaurantes(app);
+
     }
+    // MOSTRAR------------------------------------------------------------------------------------------------
+    public static int mostrarPlatos(App app,int posRestaurante)
+    {
+        Plato platos[]=app.devolverPlatos(posRestaurante);
+        Restaurante restaurante= app.devolverRestaurante(posRestaurante);
+        int val=0;
+        for (int i = 0; i <platos.length ; i++) {
+
+            if(platos[i]!=null)
+            {
+                System.out.println("------------------------------");
+                System.out.println("posicion: "+ i);
+                System.out.println("nombre: "+ platos[i].getNombre() );
+                System.out.println("tiempo demora: "+platos[i].getTiempoDemora());
+                System.out.println("Restaurante: "+restaurante.getNombre());
+                System.out.println("------------------------------");
+            }
+        }
+        return val;
+    }
+
+    public static void mostrarStrings(String arreglo[])
+    {
+        for (int i = 0; i < arreglo.length; i++) {
+            if(arreglo[i]!=null)
+            {
+                System.out.println(i+". "+arreglo[i]);
+            }
+        }
+    }
+    public static void mostrarHorarios(Horario horarios[])
+    {
+        for (int i = 0; i <horarios.length; i++){
+
+            System.out.println("*******************************");
+            System.out.println("Horario "+(i+1)+": "+horarios[i].getHoraInicio()+"-"+horarios[i].getHoraFin());
+            System.out.println("*******************************");
+
+        }
+    }
+    public static int mostrarRestaurantes(App app)
+    {
+        Restaurante restaurantes[]= app.restaurantesAbiertos();
+        int val=0;
+        for (int i = 0; i<restaurantes.length; i++) {
+
+            if(restaurantes[i]!=null)
+            {
+                System.out.println("------------------------------");
+                System.out.println("posición: "+ i);
+                System.out.println("nombre: "+  restaurantes[i].getNombre());
+                System.out.println("puntuacion: "+ restaurantes[i].calcularPuntuacion());
+                mostrarStrings(app.devolverCategorias(i));
+                mostrarHorarios(app.devolverHorarios(i));
+                System.out.println("------------------------------");
+                val++;
+
+            }
+
+        }
+        return val;
+
+    }
+    //para hacer el pedido------------------------------------------------------------------------------------------------
+
+    public static void elegirRestaurante(App app) {
+        int op = -1;
+        int val = 0;
+        while (op < 0)
+        {
+            val = mostrarRestaurantes(app);
+            System.out.println(val + ". SALIR");
+            op = sc.nextInt();
+            if (op != val && op >= 0) {
+                ///elegirplatos
+            }else if(op<0)
+            {
+                System.out.println("Opcion invalida");
+            }
+        }
+    }
+
+    public  static void elegirPlato(int posRestaurante, App app)
+    {
+        int op = -1;
+        int val = 0;
+        while (op < 0)
+        {
+            val = mostrarPlatos(app,posRestaurante);
+            System.out.println(val + ". SALIR");
+            op = sc.nextInt();
+            if (op != val && op >= 0) {
+
+                // lo puedo hacer recursivo?
+            }else if(op<0)
+            {
+                System.out.println("Opcion invalida");
+            }
+        }
+    }
+
+
+
 }

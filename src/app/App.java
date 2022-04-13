@@ -47,13 +47,15 @@ public class App {
         return getRestaurantes()[idRestaurante];
     }
 
-    public boolean devolverhacerValidaciones(int idPlato,int idRestaurante)
+    public boolean validacionPlato(int idPlato,int idRestaurante)
     {
         boolean result = false;
         Restaurante restaurante = devolverRestaurante(idRestaurante);
         Plato plato = restaurante.getListaDePlatos()[idPlato];
         Calendar ahora= Calendar.getInstance();
-        float horario=(float)ahora.get(Calendar.HOUR_OF_DAY);
+        float minutos = ahora.get(Calendar.MINUTE) * (0.010f);
+        float hora= ahora.get(Calendar.HOUR_OF_DAY);
+        float horario = hora+ minutos;
 
         if(plato.hayStock()==true && restaurante.validarHorario(horario)==true)
         {
@@ -63,4 +65,75 @@ public class App {
         return result;
 
     }
+    public boolean validacionHorario(int idRestaurante)
+    {
+        boolean result = false;
+        Restaurante restaurante = devolverRestaurante(idRestaurante);
+        Calendar ahora= Calendar.getInstance();
+        float minutos = ahora.get(Calendar.MINUTE) * (0.010f);
+        float hora= ahora.get(Calendar.HOUR_OF_DAY);
+        float horario = hora+ minutos;
+
+        if(restaurante.validarHorario(horario)==true)
+        {
+            result= true;
+        }
+
+        return result;
+
+    }
+    public Plato[]devolverPlatos(int idRestaurante)
+    {
+        Restaurante restaurante= devolverRestaurante(idRestaurante);
+
+        return restaurante.getListaDePlatos();
+    }
+    //hacer pedido
+    ///primero hago la validacion del horario y stock en el item y despues la hago para el pedido general
+    public Pedido hacerPedido(int posRestaurante,Item listitem[])
+    {
+        Restaurante restaurante= devolverRestaurante(posRestaurante);
+        if(validacionHorario(posRestaurante)) {
+            return restaurante.hacerPedido(listitem);
+
+        }else
+        {
+            return null;
+        }
+    }
+    //para mostrar al restaurante------------------------------------------------------------------------------
+    public  Restaurante[] restaurantesAbiertos()
+    {
+        Calendar ahora= Calendar.getInstance();
+        float minutos = ahora.get(Calendar.MINUTE) * (0.010f);
+        float hora= ahora.get(Calendar.HOUR_OF_DAY);
+        float horario = hora+ minutos;
+        Restaurante restaurante[]= new Restaurante[100];
+
+        int a=0;
+        for (int i = 0; i < getRestaurantes().length; i++) {
+
+            if(getRestaurantes()[i]!=null)
+            {
+                if(getRestaurantes()[i].validarHorario(horario))
+                {
+                    restaurante[a]= getRestaurantes()[i];
+                    a++;
+                }
+            }
+        }
+        return restaurante;
+    }
+
+    public  Horario[] devolverHorarios(int pos)
+    {
+        return restaurantes[pos].getHorarios();
+    }
+
+    public  String[] devolverCategorias(int pos)
+    {
+        return restaurantes[pos].getListaDecategorías();
+    }
+
+
 }
